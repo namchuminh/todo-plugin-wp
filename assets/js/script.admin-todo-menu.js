@@ -1,91 +1,42 @@
-//Selector
-const todoInput = document.getElementById("todoinput");
-const todoButton = document.getElementById("todobutton");
-const todoList = document.getElementById("todolist");
-const filterOption = document.getElementById("todoselect")
+jQuery(document).ready(function($) {
 
-//Event Listener
-todoButton.addEventListener("click", addTodo);
-todoList.addEventListener("click", deleteCheck);
-filterOption.addEventListener("click", todoFilter);
+    //Lấy url của website
+    const URL = window.location.href.split('wp-admin')[0]
 
-//Function
-function addTodo(event){
+    //Sự kiện khi nhấn vào nút Thêm task
+    $('#todobutton').click(function(event){
+        event.preventDefault()
+        const task = $('#todoinput').val()
+        $('#todoinput').val("")
 
-    //prevent Default
-    event.preventDefault();
+        //Validate trường hợp người dùng nhập vào Task là một chuỗi rỗng
+        if(task == "" || task == "undefined"){
+            alert("Vui lòng không bỏ trống tên Task!")
+        }else{
+            //Sử dụng ajax post gửi data đến URL cần xử lý
+            $.post(URL + 'wp-content/plugins/admintodo/includes/action.admin-todo-menu.php', {task: task}, function(lastIdAdd){
+                $("#todolist").append('<div class="todo" id="todo-'+lastIdAdd+'"><li class="item">'+task+'<button class="trash-btn" value="'+lastIdAdd+'"><i class="fas fa-trash"></i> </button></li></div>')
 
-    //todo div
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
+                //Sự kiện khi nhấn vào nút Xóa task để xóa task vừa được append vào
+                $('.trash-btn').click(function(){
+                    const taskIndex = $(this).val() //index task cần xóa 
+                    //Sử dụng ajax post gửi data đến URL cần xử lý
+                    $.post(URL + 'wp-content/plugins/admintodo/includes/action.admin-todo-menu.php', {taskIndex: taskIndex}, function(result){
+                        $('#todo-'+taskIndex).remove() 
+                    }) 
+                })
 
-    //todo list
-    const todoItem = document.createElement("li");
-    todoItem.classList.add("item")
-    todoItem.innerText = todoInput.value;
-    todoDiv.appendChild(todoItem);
-    
-    //todo trash button
-    const todoTrash = document.createElement("button");
-    todoTrash.classList.add("trash-btn");
-    todoTrash.innerHTML = "<i class = 'fas fa-trash'></i> ";
-    todoItem.appendChild(todoTrash);
-
-    //todo check button
-    const todoCheck = document.createElement("button");
-    todoCheck.classList.add("check-btn");
-    todoCheck.innerHTML = "<i class = 'fas fa-check'></i> ";
-    todoItem.appendChild(todoCheck);
-
-    //Append Div
-    todoList.appendChild(todoDiv);
-    todoInput.value = "";
-
-}; 
-
-//Delete Check Operation
-function deleteCheck(e){
-    //delete
-    const targetList = e.target;
-    if(targetList.classList[0] === 'trash-btn'){
-        const parentList = targetList.parentElement;
-        const todo = parentList.parentElement;
-        todo.classList.add("fall");
-        parentList.addEventListener("transitionend", function(){
-            todo.remove();
-        })
-    }
-
-    //Check
-    if(targetList.classList[0] === 'check-btn'){
-        const checkParent = targetList.parentElement;
-        const todoParent = checkParent.parentElement;
-        todoParent.classList.toggle("completed");
-    }
-};
-
-//Filtering todo
-function todoFilter(e){
-    const todos = todoList.childNodes;
-    todos.forEach(function(todo){
-        switch(e.target.value){
-            case "all":
-                todo.style.display = "flex";
-                break;
-            case "completed":
-                if(todo.classList.contains("completed")){
-                    todo.style.display = "flex";
-                }else{
-                    todo.style.display = "none";
-                }
-                break;
-            case "uncompleted":
-                if(!todo.classList.contains("completed")){
-                    todo.style.display = "flex";
-                }else{
-                    todo.style.display = "none";
-                }
-                break;
-        }
+            })   
+        }   
     })
-};
+
+
+    //Sự kiện khi nhấn vào nút Xóa task để xóa một task đã có trước từ trong CSDL
+    $('.trash-btn').click(function(){
+        const taskIndex = $(this).val() //index task cần xóa 
+        //Sử dụng ajax post gửi data đến URL cần xử lý
+        $.post(URL + 'wp-content/plugins/admintodo/includes/action.admin-todo-menu.php', {taskIndex: taskIndex}, function(result){
+            $('#todo-'+taskIndex).remove() 
+        }) 
+    })
+});

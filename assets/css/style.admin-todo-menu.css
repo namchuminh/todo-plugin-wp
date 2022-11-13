@@ -66,7 +66,7 @@ ul#todolist {list-style: none;min-width: 35%;}
     border: none;
     background: #bec917;
     color: #fff;
-    padding: 0.6rem;
+    padding: 0.4rem;
     cursor: pointer;
     transition: .3s;
 }
@@ -75,17 +75,12 @@ button.trash-btn {
     background: #f04a4a;
 }
 
-button.check-btn {
-    background: #36a036;
-}
+
 
 button.trash-btn:hover {
     background: red;
 }
 
-button.check-btn:hover {
-    background: green;
-}
 
 .fa-check, .fa-trash{
     pointer-events: none;
@@ -94,41 +89,4 @@ button.check-btn:hover {
 .fall{
     transform: translateY(8rem) rotateZ(20deg);
     opacity: 0;
-}
-.completed{
-    text-decoration: line-through;
-    opacity: 0.5;
-    transition: 0.5s;
-}
-
-select{
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    border: none;
-    outline: none;
-    padding: 0.9rem;
-    width: 10rem;
-    cursor: pointer;
-   
-}
-#select{
-    margin: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-#select::after{
-    content: "\25BC";
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #bec917;
-    color: #fff;
-    pointer-events: none;
-    padding: 0.7rem;
-    transition: all 0.3s ease;
-}
-#select:hover::after{
-    background: #fff;
-    color: #bec917 ;
 }
