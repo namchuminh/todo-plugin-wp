@@ -25,7 +25,6 @@ define( 'ADMINTODO_VERSION', '1.0.0' );
 define( 'ADMINTODO__MINIMUM_WP_VERSION', '5.0' );
 define( 'ADMINTODO__PLUGIN_URL', plugin_dir_url(__FILE__));
 define( 'ADMINTODO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'AKISMET_DELETE_LIMIT', 10000 );
 define( 'LOGO_MENU', 'https://cdn-icons-png.flaticon.com/16/3339/3339347.png');
 
 
